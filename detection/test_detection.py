@@ -9,6 +9,10 @@ Usage:
 Prints a bona fide score per clip. Higher = more likely real human speech,
 lower = more likely spoofed / AI-generated. Run it on a few real and a few
 fake ASVspoof clips and screenshot the output.
+
+Scores are relative, not a fixed real/fake verdict: audio from outside
+ASVspoof 2019 (different mics, accents, compression) shifts every score.
+The accept/reject threshold gets calibrated on our own data later.
 """
 import json
 import sys
@@ -34,7 +38,7 @@ def load_model() -> torch.nn.Module:
     with open(CONFIG) as f:
         model_config = json.load(f)["model_config"]
     model = Model(model_config)
-    model.load_state_dict(torch.load(WEIGHTS, map_location="cpu"))
+    model.load_state_dict(torch.load(WEIGHTS, map_location="cpu", weights_only=True))
     model.eval()
     return model
 
@@ -54,12 +58,12 @@ def main() -> None:
         sys.exit(1)
     model = load_model()
     print("Model: AASIST (pretrained on ASVspoof 2019 LA)")
+    print("Bona fide score: higher = more likely real speech, lower = more likely spoofed")
     with torch.no_grad():
         for path in sys.argv[1:]:
             _, logits = model(load_audio(path))
             score = logits[0, 1].item()  # index 1 = bona fide
-            label = "BONA FIDE (real)" if score > 0 else "SPOOF (fake)"
-            print(f"{Path(path).name:40s} score={score:8.4f}  -> {label}")
+            print(f"{Path(path).name:40s} score={score:8.4f}")
 
 
 if __name__ == "__main__":

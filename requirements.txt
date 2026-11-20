@@ -4,6 +4,8 @@
 torch==2.5.1
 torchaudio==2.5.1
 speechbrain==1.0.3
+# speechbrain 1.0.3 passes `use_auth_token`, which newer huggingface_hub rejects
+huggingface_hub==0.25.2
 librosa==0.10.2.post1
 soundfile==0.12.1
 numpy<2

@@ -24,9 +24,11 @@ Run these in a terminal opened in the repo folder:
 
 ```bash
 python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
+.venv\Scripts\python -m pip install -r requirements.txt
 ```
+
+Always run scripts with `.venv\Scripts\python` (as below). Plain `pip`/`python` can
+silently use your system Python instead of the project environment.
 
 Then fetch the AASIST code and pretrained weights (one time):
 
@@ -37,9 +39,9 @@ git clone https://github.com/clovaai/aasist.git detection/aasist
 ## Inference tests
 
 ```bash
-python verification/test_verification.py data/samples/a.wav data/samples/b.wav
-python detection/test_detection.py data/samples/a.wav
-python preprocessing/preprocess.py data/raw data/processed
+.venv\Scripts\python verification/test_verification.py data/samples/a.wav data/samples/b.wav
+.venv\Scripts\python detection/test_detection.py data/samples/a.wav
+.venv\Scripts\python preprocessing/preprocess.py data/raw data/processed
 ```
 
 ## Models
