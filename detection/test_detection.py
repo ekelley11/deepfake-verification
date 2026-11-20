@@ -52,18 +52,34 @@ def load_audio(path: str) -> torch.Tensor:
     return torch.from_numpy(wav).float().unsqueeze(0)
 
 
+def load_labels() -> dict:
+    """Ground-truth labels from an ASVspoof protocol file in data/asvspoof, if present."""
+    labels = {}
+    for proto in (HERE.parent / "data" / "asvspoof").glob("*.cm.*.txt"):
+        for line in proto.read_text().splitlines():
+            parts = line.split()
+            if len(parts) == 5:
+                _, utt, _, attack, label = parts
+                labels[utt] = label if label == "bonafide" else f"spoof ({attack})"
+    return labels
+
+
 def main() -> None:
     if len(sys.argv) < 2:
         print(__doc__)
         sys.exit(1)
     model = load_model()
+    labels = load_labels()
     print("Model: AASIST (pretrained on ASVspoof 2019 LA)")
-    print("Bona fide score: higher = more likely real speech, lower = more likely spoofed")
+    print("Bona fide score: higher = more likely real speech, lower = more likely spoofed\n")
+    print(f"{'file':22s} {'score':>9s}   {'true label':16s}")
+    print("-" * 52)
     with torch.no_grad():
         for path in sys.argv[1:]:
             _, logits = model(load_audio(path))
             score = logits[0, 1].item()  # index 1 = bona fide
-            print(f"{Path(path).name:40s} score={score:8.4f}")
+            truth = labels.get(Path(path).stem, "unknown")
+            print(f"{Path(path).name:22s} {score:9.4f}   {truth:16s}")
 
 
 if __name__ == "__main__":
