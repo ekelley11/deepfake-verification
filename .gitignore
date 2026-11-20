@@ -179,3 +179,16 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+# ---- Project-specific ----
+# Audio data and signed consent forms never go in the repo
+data/*
+!data/README.md
+*.wav
+*.flac
+*.mp3
+*.m4a
+consent_signed/
+
+# Downloaded models and third-party code (re-fetched per README)
+pretrained_models/
+detection/aasist/

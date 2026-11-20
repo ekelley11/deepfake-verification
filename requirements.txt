@@ -1,0 +1,9 @@
+# Python 3.11. Pinned versions known to work together.
+# CPU-only torch is fine for inference.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.5.1
+torchaudio==2.5.1
+speechbrain==1.0.3
+librosa==0.10.2.post1
+soundfile==0.12.1
+numpy<2
