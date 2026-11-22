@@ -59,7 +59,7 @@ git clone https://github.com/clovaai/aasist.git detection/aasist
 |---|---|---|
 | Member A | PM / Integration | Repo, environment, README, final PDF |
 | Member B | Verification | `verification/`, ECAPA-TDNN test + screenshot, citations |
-| Member C | Detection | `detection/`, AASIST test + screenshot, model explanation |
+| Wellborn Fuller| Detection | `detection/`, AASIST test + screenshot, model explanation |
 | Member D | Data & Preprocessing | `preprocessing/`, consent forms, enrollment recordings, benchmark samples |
 
 ## Data & consent
